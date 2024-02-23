@@ -15,6 +15,7 @@ def mock_erc20():
 def auction(mock_erc20):
     prize_amount = 100 * 10 ** 18
     auction = VickreyAuction.deploy(mock_erc20.address, prize_amount, {'from': accounts[0]})
-    # Transfer tokens directly to the auction contract
-    mock_erc20.transfer(auction.address, prize_amount, {'from': accounts[0]})
+    # Set allowance: approve the auction contract to spend tokens on behalf of the owner
+    mock_erc20.approve(auction.address, prize_amount, {'from': accounts[0]})
+    auction.initializeAuction({'from': accounts[0]})
     yield auction
