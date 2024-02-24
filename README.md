@@ -1,5 +1,10 @@
 # Problem Set 1 - Smart Contract with Ethereum
 
+
+pip install -r requirements.txt
+brownie installhttps://eth-brownie.readthedocs.io/en/stable/install.html
+nvm use 16.13.2
+
 ##  1. Set up the Environment
 Simple Contract Test
 
@@ -51,3 +56,21 @@ To run tests
 ```
   $ brownie test
 ```
+
+Prize 10000000000000000 Uni Token
+0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+
+UNI Token https://sepolia.etherscan.io/token/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984
+
+deployment transaction 
+https://sepolia.etherscan.io/tx/0xf3e442899d1fcfeb2ce27359ddc152341fabeaf0159f1bbf8ba0f9388a31fa77
+
+contract address 
+https://sepolia.etherscan.io/address/0xd1726518a0890b92cb3afa7f5dcd445eabe53878
+
+
+
+# previous
+deployment transaction https://sepolia.etherscan.io/tx/0x6bd6f39b13ab868ee5b3d1875de8597f6cc2ecc07e122fd64c687f98c4af247b
+contract address
+https://sepolia.etherscan.io/address/0x2c8e810453a328218bac6676556102d4f42d39e2

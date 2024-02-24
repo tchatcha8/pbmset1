@@ -1,4 +1,4 @@
-from brownie import VickreyAuction, accounts, web3, exceptions, MockERC20
+from brownie import VickreyAuction, accounts, web3, exceptions, MockERC20, chain
 import pytest
 
 MAX_USERS = 4
@@ -107,3 +107,44 @@ def test_claim_price(auction,mock_erc20):
     assert mock_erc20.balanceOf(accounts[4]) == 0
     auction.claimPrize({'from':accounts[4]})
     assert mock_erc20.balanceOf(accounts[4]) == PRIZE_AMOUNT
+
+
+def test_auction_expires(auction, accounts):
+    auction.bid({'from': accounts[1], 'value': "1 ether"})
+    
+    # Advance time by 7 days + 1 second to ensure the auction has expired
+    chain.sleep(604800 + 1)
+    chain.mine(1)
+    # Attempt to place another bid, which should fail if the auction has correctly expired
+    with pytest.raises(Exception):  # Replace Exception with the specific exception your contract throws
+        auction.bid({'from': accounts[2], 'value': "2 ether"})
+
+    auction.endAuction({'from': accounts[0]})
+    assert auction.auctionEnded(), "Auction should be marked as ended"
+    assert not auction.auctionSettled(), "Auction should not be marked as settled"
+
+
+def test_refund_post_auction_ended(auction, accounts,mock_erc20):
+    initial_balance = [accounts[0].balance()]
+    initial_token_price_balance = mock_erc20.balanceOf(accounts[0])
+    # Place bids
+    bids = {}
+    for i in range(1,MAX_USERS):
+        bid = web3.toWei(i, 'ether')
+        initial_balance.append(accounts[i].balance())
+        auction.bid({'from': accounts[i], 'value': bid})
+        bids[bid] = accounts[i].address
+
+    # Advance time by 7 days + 1 second to ensure the auction has expired
+    chain.sleep(604800 + 1)
+    chain.mine(1)
+
+    # End Auction
+    auction.endAuction({'from': accounts[0]})
+    # Refund bidders
+    for i in range(1,MAX_USERS):
+        auction.refundBids({'from': accounts[i]})
+        assert accounts[i].balance() == initial_balance[i] 
+    # Auction owner withdraws price
+    auction.ownerWithdrawPrize({'from': accounts[0]})
+    assert mock_erc20.balanceOf(accounts[0]) == initial_token_price_balance + PRIZE_AMOUNT
