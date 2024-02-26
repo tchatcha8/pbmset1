@@ -2,7 +2,11 @@
 
 
 pip install -r requirements.txt
-brownie installhttps://eth-brownie.readthedocs.io/en/stable/install.html
+
+brownie install
+
+    https://eth-brownie.readthedocs.io/en/stable/install.html
+
 nvm use 16.13.2
 
 ##  1. Set up the Environment
@@ -51,26 +55,25 @@ See contracts/question4.sol
 
 Corresponding tests are in tests/test_vickrey_auction.py 
 
-To run tests 
+To run tests: 
 
 ```
   $ brownie test
 ```
+Auctionned item corresponds to 10000000000000000 Uni Token
 
-Prize 10000000000000000 Uni Token
-0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+* UNI Token Address https://sepolia.etherscan.io/token/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984
 
-UNI Token https://sepolia.etherscan.io/token/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984
+* Deployment transaction 
+https://sepolia.etherscan.io/tx/0xd236ec7ca030090b0a192dbd6684ac750e85cbeda5519271af9d9cc5ef8db33b
 
-deployment transaction 
-https://sepolia.etherscan.io/tx/0xf3e442899d1fcfeb2ce27359ddc152341fabeaf0159f1bbf8ba0f9388a31fa77
-
-contract address 
-https://sepolia.etherscan.io/address/0xd1726518a0890b92cb3afa7f5dcd445eabe53878
+* Auction contract address
+https://sepolia.etherscan.io/address/0xF0323094895f80Ac6b024E6Aa73D7Eb875033B21
 
 
+* Before calling initializeAuction() call approve() on  
 
-# previous
-deployment transaction https://sepolia.etherscan.io/tx/0x6bd6f39b13ab868ee5b3d1875de8597f6cc2ecc07e122fd64c687f98c4af247b
-contract address
-https://sepolia.etherscan.io/address/0x2c8e810453a328218bac6676556102d4f42d39e2
+    https://sepolia.etherscan.io/address/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984#tokentxns
+
+    Use auction's contract address as input for spender's address
+

@@ -7,8 +7,9 @@ PRIZE_AMOUNT = 100 * 10 ** 18
 def test_initial_state(auction):
     # Test the initial state of the auction
     assert auction.owner() == accounts[0]
-    assert auction.auctionEnded() == False
-    assert auction.auctionSettled() == False
+    auction_state = auction.state()
+    assert auction_state[2] == False
+    assert auction_state[3] == False
 
 def test_place_bid(auction):
     # Test placing bids
@@ -27,7 +28,8 @@ def test_settle_auction(auction):
     auction.settleAuction({'from': accounts[0]})
     bid_values = list(bids.keys())
     bid_values.sort()
-    assert auction.auctionSettled() == True
+    auction_state = auction.state()
+    assert auction_state[3] == True
     assert auction.winningBidPrice() == bid_values[-2]
     assert auction.winner() == bids[bid_values[-1]]
 
@@ -83,8 +85,9 @@ def test_reset_auction(auction):
     # Reset the auction
     auction.resetAuction({'from': accounts[0]})
     # Assertions: Check the auction state is reset
-    assert not auction.auctionEnded(), "Auction should not be marked as ended"
-    assert not auction.auctionSettled(), "Auction should not be marked as settled"
+    auction_state = auction.state()
+    assert not auction_state[2], "Auction should not be marked as ended"
+    assert not auction_state[3], "Auction should not be marked as settled"
 
 
 def test_claim_price(auction,mock_erc20):
@@ -120,8 +123,9 @@ def test_auction_expires(auction, accounts):
         auction.bid({'from': accounts[2], 'value': "2 ether"})
 
     auction.endAuction({'from': accounts[0]})
-    assert auction.auctionEnded(), "Auction should be marked as ended"
-    assert not auction.auctionSettled(), "Auction should not be marked as settled"
+    auction_state = auction.state()
+    assert auction_state[2], "Auction should be marked as ended"
+    assert not auction_state[3], "Auction should not be marked as settled"
 
 
 def test_refund_post_auction_ended(auction, accounts,mock_erc20):
