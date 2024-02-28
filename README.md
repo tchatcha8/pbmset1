@@ -65,7 +65,7 @@ To run tests:
   $ brownie test
 ```
 Auctionned item corresponds to 10000000000000000 Uni Token
-8000000000000000
+
 
 * UNI Token Address https://sepolia.etherscan.io/token/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984
 
